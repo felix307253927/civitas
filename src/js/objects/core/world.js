@@ -2,7 +2,7 @@
  * World object.
  * 
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class world
  * @returns {world}
  */
@@ -199,7 +199,7 @@ class world {
 		const hex = {
 			x: game.get_random(0, game.WORLD_SIZE_WIDTH - 1),
 			y: game.get_random(0, game.WORLD_SIZE_HEIGHT - 1)
-		}
+		};
 		if (typeof terrain !== 'undefined') {
 			if (!this.hex_is_water(hex) && !this.hex_is_locked(hex)) {
 				//if ($.inArray(data[hex.y][hex.x].t, terrain) !== -1) {
@@ -441,8 +441,13 @@ class world {
 	 * @returns {world}
 	 */
 	_generate () {
-		let rng1 = PM_PRNG.create(this.seeds.elevation);
-		let rng2 = PM_PRNG.create(this.seeds.moisture);
+		function PMPRNG_create(seed) {
+			var result = new PM_PRNG();
+			result.seed = (typeof seed === "undefined") ? 1 : seed;
+			return result;
+		}
+		let rng1 = PMPRNG_create(this.seeds.elevation);
+		let rng2 = PMPRNG_create(this.seeds.moisture);
 		let gen1 = new SimplexNoise(rng1.nextDouble.bind(rng1));
 		let gen2 = new SimplexNoise(rng2.nextDouble.bind(rng2));
 		function noise1(nx, ny) {
@@ -525,50 +530,50 @@ class world {
 	}
 
 	get_neighbouring_hexes (y, x) {
-		if (x % 2 == 0) {
+		if (x % 2 === 0) {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y-1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
-			]
+			];
 		} else {
 			return [
 				{
 					x: x+1,
-					y: y
+					y
 				}, {
 					x: x+1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y-1
 				}, {
 					x: x-1,
-					y: y
+					y
 				}, {
 					x: x-1,
 					y: y+1
 				}, {
-					x: x,
+					x,
 					y: y+1
 				}
-			]
+			];
 		}
 	}
 
@@ -695,7 +700,7 @@ class world {
 			ctx.globalAlpha = opacity;
 			ctx.drawImage(imageObject, x + 6, y + 2, image_size, image_size);
 			ctx.globalAlpha = 1;
-		}
+		};
 		imageObject.src = game.ASSETS_URL + 'images/world/terrain/' + terrain + '.png';
 		return this;
 	}

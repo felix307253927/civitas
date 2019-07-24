@@ -1,7 +1,7 @@
 /**
  * Main Game core object, responsible with the game events.
  * 
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class game
  * @returns {game}
  */
@@ -615,25 +615,25 @@ class game {
 			if (typeof this._auctioneer[resource] !== 'undefined') {
 				const old = this._auctioneer[resource];
 				this._auctioneer[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._auctioneer[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed an order for ' + amount + ' ' + game.get_resource_name(resource) + ' on the Auctioneer.', 'Auctioneer');
 			return {
 				buyer: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -677,25 +677,25 @@ class game {
 			if (typeof this._black_market[resource] !== 'undefined') {
 				const old = this._black_market[resource];
 				this._black_market[resource] = {
-					resource: resource,
+					resource,
 					amount: old.amount + amount,
 					price: old.price + price
 				};
 			} else {
 				this._black_market[resource] = {
-					resource: resource,
-					amount: amount,
-					price: price
+					resource,
+					amount,
+					price
 				};
 			}
 			this.ui().refresh();
 			this.ui().notify(settlement.name() + ' placed ' + amount + ' ' + game.get_resource_name(resource) + ' on the Black Market and will receive ' + price + ' ' + game.get_resource_name('coins') + ' next month.', 'Black Market');
 			return {
 				seller: settlement.name(),
-				amount: amount,
+				amount,
 				goods: game.get_resource_name(resource),
-				price: price,
-				discount: discount
+				price,
+				discount
 			};
 		}
 		return false;
@@ -888,7 +888,7 @@ class game {
 			const achievement = this.get_achievement_config_data(handle);
 			if (achievement) {
 				this._achievements.push({
-					handle: handle,
+					handle,
 					date: + new Date()
 				});
 				this._achievement_points += achievement.points;
@@ -945,7 +945,7 @@ class game {
 			const research = this.get_research_config_data(handle);
 			if (research !== false) {
 				this._research.push({
-					handle: handle
+					handle
 				});
 				this.ui().notify(research.description, 'Research: ' + research.name, false, game.NOTIFY_RESEARCH);
 				this.save_and_refresh();
@@ -1651,8 +1651,8 @@ class game {
 			}
 		}
 		return {
-			resources: resources,
-			trades: trades
+			resources,
+			trades
 		};
 	}
 
@@ -1701,11 +1701,11 @@ class game {
 			name: game.get_random_unique(game.SETTLEMENT_NAMES),
 			religion: s_type === game.CAMP ? game.RELIGION_NONE : this.get_random_religion(),
 			nationality: this.get_random_nationality(),
-			level: level,
+			level,
 			resources: resources.resources,
 			army: this.generate_random_army(s_type),
 			navy: this.generate_random_navy(s_type)
-		}
+		};
 		if (s_type === game.CITY || s_type === game.METROPOLIS) {
 			settlement.trades = resources.trades;
 		}
@@ -1757,8 +1757,8 @@ class game {
 		const difficulty = this.difficulty();
 		this.add_settlement({
 			name: cityname,
-			climate: climate,
-			avatar: avatar,
+			climate,
+			avatar,
 			religion: game.RELIGION_NONE,
 			nationality: nation,
 			army: game.INITIAL_SEED[difficulty - 1].military.army,
@@ -1766,8 +1766,8 @@ class game {
 			resources: game.INITIAL_SEED[difficulty - 1].resources,
 			core: this
 		}, 0, {
-			name: name,
-			avatar: avatar
+			name,
+			avatar
 		}).setup_initial_buildings(game.INITIAL_SEED[difficulty - 1].buildings);
 		return this;
 	}
@@ -1815,19 +1815,19 @@ class game {
 					title: '',
 					avatar: p_data.avatar,
 					personality: game.PERSONALITY_BALANCED
-				}
+				};
 			}
 			new_settlement = new settlement({
 				core: this,
 				properties: {
-					id: id,
+					id,
 					type: typeof s_data.type !== 'undefined' ? s_data.type : game.CITY,
 					name: typeof s_data.name !== 'undefined' ? s_data.name : game.get_random_unique(game.SETTLEMENT_NAMES),
-					player: player,
+					player,
 					level: typeof s_data.level !== 'undefined' ? s_data.level : 1,
-					climate: climate,
+					climate,
 					religion: typeof s_data.religion !== 'undefined' ? s_data.religion : game.RELIGION_CHRISTIANITY,
-					ruler: ruler,
+					ruler,
 					nationality: s_data.nationality,
 					icon: typeof s_data.icon !== 'undefined' ? s_data.icon : 1
 				},
@@ -1835,7 +1835,7 @@ class game {
 				army: typeof s_data.army !== 'undefined' ? s_data.army : {},
 				navy: typeof s_data.navy !== 'undefined' ? s_data.navy : {},
 				trades: typeof s_data.trades !== 'undefined' ? s_data.trades : {},
-				location: location
+				location
 			});
 			if (player === false) {
 				this.get_settlement().status(id, {
@@ -1938,7 +1938,7 @@ class game {
 		let _place = new place({
 			core: this,
 			properties: {
-				id: id,
+				id,
 				sid: null,
 				name: null,
 				scouted: false
@@ -1949,7 +1949,7 @@ class game {
 				},
 				required: this.generate_random_place_resources()
 			},
-			location: location
+			location
 		});
 		this._places.push(_place);
 		return _place;
@@ -2144,7 +2144,7 @@ class game {
 			}
 		}, 1000);
 		$(document).keyup(function(event) {
-			if (event.keyCode == 27 && !ui.window_exists('#window-options')) {
+			if (event.keyCode === 27 && !ui.window_exists('#window-options')) {
 				ui.show_loader();
 				ui.open_window('options');
 			}
@@ -2588,7 +2588,7 @@ class game {
 	static is_virtual_resource (resource) {
 		if (typeof game.RESOURCES[resource] !== 'undefined') {
 			if (game.RESOURCES[resource].category === 'virtual') {
- 				return true;
+				return true;
 			}
 		}
 		return false;
@@ -2625,7 +2625,7 @@ class game {
 			value: damage_val,
 			min: damage_min !== 0 ? damage_min : 1,
 			max: damage_max !== 0 ? damage_max : damage_val
-		}
+		};
 	}
 
 	/**
@@ -2798,7 +2798,7 @@ class game {
 	 * @returns {Number}
 	 */
 	static get_random (min, max) {
-	    return Math.floor(Math.random() * (max - min + 1)) + min;
+		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 
 	/**

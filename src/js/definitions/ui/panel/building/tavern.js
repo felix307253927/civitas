@@ -2,7 +2,7 @@
  * Tavern panel data.
  *
  * @param {Object} params
- * @license GPLv3
+ * @license GPL-3.0-or-later
  * @class ui_panel_tavern
  * @extends ui_panel
  * @returns {ui_panel_tavern}
@@ -49,7 +49,7 @@ class ui_panel_tavern extends ui_panel {
 					for (let i = 0; i < game.ITEM_BACKPACK_NUM; i++) {
 						$(self.handle + ' .hero-items').append('<div class="slot" data-backpack-slot="' + i + '"></div>');
 					}
-				}
+				};
 				self.empty_items();
 				for (let i = 0; i < game.HEROES.length; i++) {
 					_t += '<p><a href="#" data-hero="' + game.HEROES[i].handle + '">' + game.HEROES[i].name + '</a></p>';
